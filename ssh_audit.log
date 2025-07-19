@@ -1,0 +1,30 @@
+2025-07-19 13:31:49,812 - SSH Honeypot running on 0.0.0.0:2222
+2025-07-19 13:32:18,950 - Connected (version 2.0, client OpenSSH_for_Windows_9.5)
+2025-07-19 13:32:26,295 - Auth rejected (none).
+2025-07-19 13:32:37,693 - Login attempt: admin:1234 from 127.0.0.1
+2025-07-19 13:32:37,693 - Auth rejected (password).
+2025-07-19 13:32:40,667 - Login attempt: admin:2222 from 127.0.0.1
+2025-07-19 13:32:40,672 - Auth rejected (password).
+2025-07-19 13:32:44,212 - Login attempt: admin:4444 from 127.0.0.1
+2025-07-19 13:32:44,212 - Auth rejected (password).
+2025-07-19 13:32:44,215 - Socket exception: An existing connection was forcibly closed by the remote host (10054)
+2025-07-19 13:37:59,852 - Connected (version 2.0, client OpenSSH_for_Windows_9.5)
+2025-07-19 13:37:59,901 - Socket exception: An existing connection was forcibly closed by the remote host (10054)
+2025-07-19 13:37:59,901 - Error: [WinError 10054] An existing connection was forcibly closed by the remote host
+2025-07-19 13:38:28,104 - Connected (version 2.0, client OpenSSH_for_Windows_9.5)
+2025-07-19 13:38:28,118 - Socket exception: An existing connection was forcibly closed by the remote host (10054)
+2025-07-19 13:38:28,119 - Error: [WinError 10054] An existing connection was forcibly closed by the remote host
+2025-07-19 13:39:41,560 - SSH Honeypot running on 0.0.0.0:2222
+2025-07-19 13:39:55,768 - Connected (version 2.0, client OpenSSH_for_Windows_9.5)
+2025-07-19 13:39:55,803 - Socket exception: An existing connection was forcibly closed by the remote host (10054)
+2025-07-19 13:39:55,806 - Error: [WinError 10054] An existing connection was forcibly closed by the remote host
+2025-07-19 13:40:54,485 - Connected (version 2.0, client OpenSSH_for_Windows_9.5)
+2025-07-19 13:40:58,384 - Auth rejected (none).
+2025-07-19 13:41:02,197 - Login attempt: admin:password from 127.0.0.1
+2025-07-19 13:41:02,201 - Auth granted (password).
+2025-07-19 13:41:02,213 - Socket exception: An existing connection was forcibly closed by the remote host (10054)
+2025-07-19 13:43:53,568 - SSH Honeypot running on 0.0.0.0:2222
+2025-07-19 13:44:17,988 - Connected (version 2.0, client OpenSSH_for_Windows_9.5)
+2025-07-19 13:44:19,751 - Auth rejected (none).
+2025-07-19 13:44:22,715 - Login attempt: admin:password from 127.0.0.1
+2025-07-19 13:44:22,715 - Auth granted (password).
