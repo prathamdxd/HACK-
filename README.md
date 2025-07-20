@@ -6,8 +6,10 @@ try worng passwords
 correct password :password
 
 once login try : 
-<img width="665" height="657" alt="image" src="https://github.com/user-attachments/assets/e1ff4779-e72b-420d-a613-dd4a13f253c3" />
-<img width="805" height="569" alt="image" src="https://github.com/user-attachments/assets/4aa931a3-a8cc-4cdd-8e4c-cbbd13d9c178" />
+
+<img width="465" height="457" alt="image" src="https://github.com/user-attachments/assets/e1ff4779-e72b-420d-a613-dd4a13f253c3" />
+
+<img width="605" height="369" alt="image" src="https://github.com/user-attachments/assets/4aa931a3-a8cc-4cdd-8e4c-cbbd13d9c178" />
 
 in cmd if the following error occurs 
 
