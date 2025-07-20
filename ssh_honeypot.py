@@ -7,6 +7,8 @@ import time
 import random
 import re
 from io import StringIO
+import json
+from pathlib import Path
 
 # Configuration
 SSH_BANNER = "SSH-2.0-OpenSSH_7.6p1 Ubuntu-4ubuntu0.3"
@@ -17,6 +19,7 @@ PASSWORD = "password"
 COMMAND_TIMEOUT = 30
 SESSION_DURATION_LIMIT = 600
 MAX_LOGIN_ATTEMPTS = 5
+HOSTNAME = "prod-web01"
 
 # Enhanced logging
 logging.basicConfig(
@@ -30,74 +33,143 @@ logging.basicConfig(
 )
 logger = logging.getLogger("ssh_honeypot")
 
-# More realistic fake filesystem
+# Realistic fake filesystem
 FAKE_FS = {
     '/': {
         'type': 'dir',
-        'contents': ['bin', 'etc', 'home', 'tmp', 'usr', 'var'],
+        'contents': ['bin', 'etc', 'home', 'lib', 'opt', 'root', 'tmp', 'usr', 'var'],
         'perms': 'drwxr-xr-x',
-        'owner': 'root'
+        'owner': 'root',
+        'size': 4096,
+        'modified': 'Jul 20 10:00'
     },
     '/etc': {
         'type': 'dir',
-        'contents': ['passwd', 'shadow', 'ssh', 'hosts'],
+        'contents': ['passwd', 'shadow', 'group', 'hosts', 'ssh', 'crontab', 'mysql'],
         'perms': 'drwxr-xr-x',
-        'owner': 'root'
+        'owner': 'root',
+        'size': 4096,
+        'modified': 'Jul 20 09:30'
     },
     '/etc/passwd': {
         'type': 'file',
-        'content': "root:x:0:0:root:/root:/bin/bash\nadmin:x:1000:1000:Admin User:/home/admin:/bin/bash",
+        'content': """root:x:0:0:root:/root:/bin/bash
+admin:x:1000:1000:Admin User:/home/admin:/bin/bash
+mysql:x:106:112:MySQL Server:/nonexistent:/bin/false
+apache:x:33:33:Apache Web Server:/var/www:/usr/sbin/nologin""",
         'perms': '-rw-r--r--',
-        'owner': 'root'
+        'owner': 'root',
+        'size': 1024,
+        'modified': 'Jul 19 14:20'
     },
     '/etc/shadow': {
         'type': 'file',
-        'content': "root:*:18295:0:99999:7:::\nadmin:$6$rounds=656000$V4M2X1XwYFZJkDf0$X5Jz7v8Qz3q9Q1w2E3r4T5y6U7i8O9p0A1S2D3F4G5H6J7K8L9Z0X1C2V3B4N5M:18295:0:99999:7:::",
+        'content': """root:*:18295:0:99999:7:::
+admin:$6$rounds=656000$V4M2X1XwYFZJkDf0$X5Jz7v8Qz3q9Q1w2E3r4T5y6U7i8O9p0A1S2D3F4G5H6J7K8L9Z0X1C2V3B4N5M:18295:0:99999:7:::
+mysql:!:18295:0:99999:7:::
+apache:!:18295:0:99999:7:::""",
         'perms': '-rw-r-----',
-        'owner': 'root'
+        'owner': 'root',
+        'size': 1024,
+        'modified': 'Jul 19 14:20'
     },
-    '/tmp': {
+    '/var/www/html': {
         'type': 'dir',
-        'contents': [],
-        'perms': 'drwxrwxrwt',
-        'owner': 'root'
+        'contents': ['index.php', 'config.php', 'uploads'],
+        'perms': 'drwxr-xr-x',
+        'owner': 'apache',
+        'size': 4096,
+        'modified': 'Jul 20 08:15'
+    },
+    '/var/log/apache2': {
+        'type': 'dir',
+        'contents': ['access.log', 'error.log'],
+        'perms': 'drwxr-x---',
+        'owner': 'root',
+        'size': 4096,
+        'modified': 'Jul 20 11:30'
+    },
+    '/home/admin': {
+        'type': 'dir',
+        'contents': ['.bash_history', '.ssh', 'user.txt'],
+        'perms': 'drwxr-xr-x',
+        'owner': 'admin',
+        'size': 4096,
+        'modified': 'Jul 20 10:45'
+    },
+    '/home/admin/user.txt': {
+        'type': 'file',
+        'content': "This is a regular user file with no sensitive data",
+        'perms': '-rw-r--r--',
+        'owner': 'admin',
+        'size': 42,
+        'modified': 'Jul 20 10:45'
     }
 }
 
-# Enhanced malware patterns
+# Expanded malware patterns
 MALWARE_PATTERNS = [
-    r"(wget|curl)\s+(http|https|ftp)://",
+    r"(wget|curl)\s+(http|https|ftp)://.*(\.sh|\.py|\.pl)\s*-[oO]",
     r"chmod\s+[+]x",
-    r"(bash|sh)\s+-[ic]",
+    r"(bash|sh|zsh|dash)\s+-[ic]",
     r"python\d?\s+-c",
     r"perl\s+-e",
     r"rm\s+-rf",
     r"mkfifo",
     r"/dev/(tcp|udp)/",
-    r"nc\s+.*(-l|-v|-p)",
+    r"nc\s+.*(-l|-v|-p|-e)",
     r"(exec|eval)\s+",
     r"echo\s+.*\s*>\s*/",
     r"\./.*\.(sh|py|pl)",
-    r"sudo\s+.*(apt|yum|dnf)",
-    r"useradd|adduser",
+    r"sudo\s+.*(apt|yum|dnf|pip|npm)",
+    r"useradd|adduser|usermod",
     r"passwd\s+.*--stdin",
     r"ssh-keygen\s+-t\s+rsa",
     r"cat\s+>/etc/crontab",
-    r"chattr\s+[+]i"
+    r"chattr\s+[+]i",
+    r"mysql\s+-u\s+root\s+-p[^\s]*\s+-e",
+    r"docker\s+(run|exec)\s+.*(--privileged|-v\s+/:/host)"
 ]
+
+# Fake processes
+FAKE_PROCESSES = [
+    {"pid": 1, "name": "systemd", "user": "root",
+        "cpu": "0.1", "mem": "0.5", "cmd": "/sbin/init"},
+    {"pid": 100, "name": "sshd", "user": "root", "cpu": "0.3",
+        "mem": "1.2", "cmd": "/usr/sbin/sshd -D"},
+    {"pid": 101, "name": "bash", "user": "admin",
+        "cpu": "0.5", "mem": "0.8", "cmd": "-bash"},
+    {"pid": 200, "name": "apache2", "user": "apache", "cpu": "2.1",
+        "mem": "5.7", "cmd": "/usr/sbin/apache2 -k start"},
+    {"pid": 201, "name": "mysql", "user": "mysql",
+        "cpu": "3.2", "mem": "12.4", "cmd": "/usr/sbin/mysqld"},
+    {"pid": 300, "name": "docker", "user": "root", "cpu": "0.7",
+        "mem": "3.5", "cmd": "/usr/bin/dockerd -H fd://"}
+]
+
+# Vulnerable sudo configuration
+VULNERABLE_SUDO = {
+    "admin": [
+        "(ALL) NOPASSWD: /usr/bin/apt",
+        "(ALL) NOPASSWD: /usr/bin/docker",
+        "(ALL) NOPASSWD: /usr/bin/crontab"
+    ]
+}
 
 
 class FakeShell:
     def __init__(self, channel, client_ip):
         self.channel = channel
         self.client_ip = client_ip
-        self.cwd = '/'
+        self.cwd = '/home/admin'
         self.start_time = time.time()
         self.last_activity = time.time()
         self.session_active = True
         self.is_root = False
         self.username = USERNAME
         self.command_history = []
+        self.ssh_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.ssh_socket.settimeout(1)
 
     def check_timeout(self):
         if time.time() - self.last_activity > COMMAND_TIMEOUT:
@@ -112,38 +184,43 @@ class FakeShell:
         return False
 
     def detect_malware(self, cmd):
+        cmd_lower = cmd.lower()
         for pattern in MALWARE_PATTERNS:
-            if re.search(pattern, cmd, re.IGNORECASE):
+            if re.search(pattern, cmd_lower):
                 logger.warning(
                     f"Malicious command detected from {self.client_ip}: {cmd}")
                 return True
         return False
 
     def fake_sudo(self, cmd):
-        if "sudo" in cmd and not self.is_root:
-            self.channel.send(f"[sudo] password for {self.username}: ")
-            password = ""
-            while True:
-                if self.channel.recv_ready():
-                    char = self.channel.recv(1).decode()
-                    if char in ('\r', '\n'):
-                        break
-                    password += char
-                    self.channel.send("*")
-                else:
-                    time.sleep(0.1)
-                    if self.check_timeout():
-                        return False
+        if "sudo" in cmd:
+            if not self.is_root:
+                self.channel.send(f"[sudo] password for {self.username}: ")
+                password = ""
+                while True:
+                    if self.channel.recv_ready():
+                        char = self.channel.recv(1).decode()
+                        if char in ('\r', '\n'):
+                            break
+                        password += char
+                        self.channel.send("*")
+                    else:
+                        time.sleep(0.1)
+                        if self.check_timeout():
+                            return False
 
-            if password == PASSWORD:
-                self.is_root = True
-                logger.info(f"Successful sudo from {self.client_ip}")
-                self.channel.send("\r\n")
-                return True
+                if password == PASSWORD:
+                    self.is_root = True
+                    logger.info(f"Successful sudo from {self.client_ip}")
+                    self.channel.send("\r\n")
+                    return True
+                else:
+                    logger.warning(
+                        f"Failed sudo attempt from {self.client_ip}")
+                    self.channel.send("\r\nSorry, try again.\r\n")
+                    return False
             else:
-                logger.warning(f"Failed sudo attempt from {self.client_ip}")
-                self.channel.send("\r\nSorry, try again.\r\n")
-                return False
+                return True
         return True
 
     def handle_command(self, cmd):
@@ -195,6 +272,12 @@ class FakeShell:
             self.handle_rm(cmd)
         elif cmd.startswith("chmod "):
             self.handle_chmod(cmd)
+        elif cmd == "sudo -l":
+            self.handle_sudo_list()
+        elif cmd.startswith("docker "):
+            self.handle_docker(cmd)
+        elif cmd.startswith("mysql "):
+            self.handle_mysql(cmd)
         elif cmd == "help":
             self.handle_help()
         elif cmd == "":
@@ -213,7 +296,7 @@ class FakeShell:
                     if path in FAKE_FS:
                         details = FAKE_FS[path]
                         output.write(
-                            f"{details['perms']} 1 {details['owner']} {details['owner']} 4096 Jul 10 12:00 {item}\r\n")
+                            f"{details['perms']} {details['owner']:>8} {details['size']:>6} {details['modified']} {item}\r\n")
                 self.channel.send("\r\n" + output.getvalue())
             else:
                 self.channel.send("\r\n" + "  ".join(contents) + "\r\n")
@@ -260,17 +343,9 @@ class FakeShell:
         output = StringIO()
         output.write(
             "USER       PID %CPU %MEM    VSZ   RSS TTY      STAT START   TIME COMMAND\r\n")
-        processes = [
-            {"user": "root", "pid": 1, "name": "systemd", "cpu": "0.1", "mem": "0.5"},
-            {"user": "root", "pid": 2, "name": "kthreadd",
-                "cpu": "0.0", "mem": "0.0"},
-            {"user": "root", "pid": 100, "name": "sshd", "cpu": "0.3", "mem": "1.2"},
-            {"user": self.username, "pid": 101,
-                "name": "bash", "cpu": "0.5", "mem": "0.8"}
-        ]
-        for proc in processes:
+        for proc in FAKE_PROCESSES:
             output.write(
-                f"{proc['user']:8} {proc['pid']:6} {proc['cpu']:4} {proc['mem']:4} 123456 65432 ?        S    12:00   0:00 {proc['name']}\r\n")
+                f"{proc['user']:8} {proc['pid']:6} {proc['cpu']:4} {proc['mem']:4} 123456 65432 ?        S    12:00   0:00 {proc['cmd']}\r\n")
         self.channel.send("\r\n" + output.getvalue())
 
     def handle_network(self):
@@ -298,8 +373,10 @@ Active Internet connections (only servers)
 Proto Recv-Q Send-Q Local Address           Foreign Address         State      
 tcp        0      0 0.0.0.0:22              0.0.0.0:*               LISTEN     
 tcp        0      0 0.0.0.0:80              0.0.0.0:*               LISTEN     
+tcp        0      0 0.0.0.0:3306            0.0.0.0:*               LISTEN     
 tcp6       0      0 :::22                   :::*                    LISTEN     
 tcp6       0      0 :::80                   :::*                    LISTEN     
+tcp6       0      0 :::3306                 :::*                    LISTEN     
 udp        0      0 0.0.0.0:68              0.0.0.0:*                          
 \r\n""")
 
@@ -338,6 +415,37 @@ udp        0      0 0.0.0.0:68              0.0.0.0:*
         self.channel.send(
             "\r\nchmod: changing permissions: Operation not permitted\r\n")
 
+    def handle_sudo_list(self):
+        output = StringIO()
+        output.write("Matching Defaults entries for admin on this host:\r\n")
+        output.write(
+            "    env_reset, mail_badpass, secure_path=/usr/local/sbin\\:/usr/local/bin\\:/usr/sbin\\:/usr/bin\\:/sbin\\:/bin\\:/snap/bin\r\n\r\n")
+        output.write(
+            "User admin may run the following commands on this host:\r\n")
+        for rule in VULNERABLE_SUDO.get(self.username, []):
+            output.write(f"    (ALL) NOPASSWD: {rule}\r\n")
+        self.channel.send("\r\n" + output.getvalue())
+
+    def handle_docker(self, cmd):
+        if "run" in cmd or "exec" in cmd:
+            logger.warning(
+                f"Docker command attempt from {self.client_ip}: {cmd}")
+            self.channel.send(
+                "\r\ndocker: permission denied while trying to connect to the Docker daemon socket\r\n")
+        else:
+            self.channel.send(
+                "\r\ndocker: command not found (simulated response)\r\n")
+
+    def handle_mysql(self, cmd):
+        if "-u root" in cmd:
+            logger.warning(
+                f"MySQL root access attempt from {self.client_ip}: {cmd}")
+            self.channel.send(
+                "\r\nERROR 1045 (28000): Access denied for user 'root'@'localhost' (using password: YES)\r\n")
+        else:
+            self.channel.send(
+                "\r\nERROR 2002 (HY000): Can't connect to local MySQL server through socket '/var/run/mysqld/mysqld.sock' (2)\r\n")
+
     def handle_help(self):
         self.channel.send("""
 Available commands:
@@ -373,7 +481,7 @@ Last login: {time.strftime('%a %b %d %H:%M:%S %Y')} from {self.client_ip}
 
             while self.session_active and not self.check_timeout():
                 try:
-                    prompt = f"\r\n{self.username}@{socket.gethostname()}:{self.cwd}# " if self.is_root else f"\r\n{self.username}@{socket.gethostname()}:{self.cwd}$ "
+                    prompt = f"\r\n{self.username}@{HOSTNAME}:{self.cwd}# " if self.is_root else f"\r\n{self.username}@{HOSTNAME}:{self.cwd}$ "
                     self.channel.send(prompt)
 
                     cmd = ""

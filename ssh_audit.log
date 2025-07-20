@@ -110,3 +110,29 @@
 2025-07-20 11:54:28,199 - INFO - New SSH session from 127.0.0.1
 2025-07-20 11:56:03,668 - INFO - Session ended with 127.0.0.1 (Duration: 95.46s, Commands: 19)
 2025-07-20 11:56:03,673 - ERROR - Socket exception: An operation was attempted on something that is not a socket (10038)
+2025-07-20 12:02:32,484 - INFO - SSH Honeypot running on 0.0.0.0:2222
+2025-07-20 12:02:32,484 - INFO - Default credentials: admin:password
+2025-07-20 12:02:39,415 - INFO - New connection from 127.0.0.1:58137
+2025-07-20 12:02:39,469 - INFO - Connected (version 2.0, client OpenSSH_for_Windows_9.5)
+2025-07-20 12:02:39,484 - INFO - Auth rejected (none).
+2025-07-20 12:02:53,134 - INFO - Login attempt 1 from 127.0.0.1: admin:dddd
+2025-07-20 12:02:53,134 - INFO - Auth rejected (password).
+2025-07-20 12:02:54,967 - INFO - Login attempt 2 from 127.0.0.1: admin:ddd
+2025-07-20 12:02:54,967 - INFO - Auth rejected (password).
+2025-07-20 12:02:56,230 - INFO - Login attempt 3 from 127.0.0.1: admin:ddd
+2025-07-20 12:02:56,230 - INFO - Auth rejected (password).
+2025-07-20 12:02:56,237 - ERROR - Socket exception: An existing connection was forcibly closed by the remote host (10054)
+2025-07-20 12:03:00,600 - INFO - New connection from 127.0.0.1:58159
+2025-07-20 12:03:00,755 - INFO - Connected (version 2.0, client OpenSSH_for_Windows_9.5)
+2025-07-20 12:03:00,775 - INFO - Auth rejected (none).
+2025-07-20 12:03:09,203 - INFO - Login attempt 1 from 127.0.0.1: admin:jj
+2025-07-20 12:03:09,205 - INFO - Auth rejected (password).
+2025-07-20 12:03:10,413 - INFO - Login attempt 2 from 127.0.0.1: admin:jj
+2025-07-20 12:03:10,425 - INFO - Auth rejected (password).
+2025-07-20 12:03:12,409 - INFO - Login attempt 3 from 127.0.0.1: admin:kk
+2025-07-20 12:03:12,409 - INFO - Auth rejected (password).
+2025-07-20 12:03:12,419 - ERROR - Socket exception: An existing connection was forcibly closed by the remote host (10054)
+2025-07-20 12:03:16,643 - INFO - New connection from 127.0.0.1:58179
+2025-07-20 12:03:16,791 - INFO - Connected (version 2.0, client OpenSSH_for_Windows_9.5)
+2025-07-20 12:03:16,803 - INFO - Auth rejected (none).
+2025-07-20 12:03:36,805 - ERROR - Socket exception: An operation was attempted on something that is not a socket (10038)
